@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
 import { Button } from "../ui/button";
-import { File, Github, Linkedin } from "lucide-react";
+import { Github } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -11,7 +11,7 @@ import {
 import { usePreloader } from "../preloader";
 import { BlurIn, BoxReveal } from "../reveal-animations";
 import ScrollDownIcon from "../scroll-down-icon";
-import { SiGithub, SiLinkedin, SiX } from "react-icons/si";
+import { SiGithub, SiFacebook, SiInstagram } from "react-icons/si";
 import { config } from "@/data/config";
 
 import SectionWrapper from "../ui/section-wrapper";
@@ -55,9 +55,9 @@ const HeroSection = () => {
                           "cursor-default text-edge-outline font-display "
                         )}
                       >
-                        {config.author.split(" ")[0]}
+                        {config.displayName.split(" ")[0]}
                         <br className="md:block hiidden" />
-                        {config.author.split(" ")[1]}
+                        {config.displayName.split(" ")[1]}
                       </h1>
                     </TooltipTrigger>
                     <TooltipContent
@@ -76,25 +76,12 @@ const HeroSection = () => {
                       "cursor-default font-display sm:text-xl md:text-xl whitespace-nowrap bg-clip-text "
                     )}
                   >
-                    A Full Stack Web Developer
+                    A Full-Stack Dev & Red Team Specialist
                   </p>
                 </BlurIn>
               </div>
               <div className="mt-8 flex flex-col gap-3 w-fit">
-                <Link
-                  href={
-                    "https://drive.google.com/file/d/1MTSsUA8V7Po2AsNXT8kZ5sLOpzC8l7qm/view?usp=sharing"
-                  }
-                  target="_blank"
-                  className="flex-1"
-                >
-                  <BoxReveal delay={2} width="100%" >
-                    <Button className="flex items-center gap-2 w-full">
-                      <File size={24} />
-                      <p>Resume</p>
-                    </Button>
-                  </BoxReveal>
-                </Link>
+
                 <div className="md:self-start flex gap-3">
                   <Tooltip delayDuration={300}>
                     <TooltipTrigger asChild>
@@ -113,11 +100,11 @@ const HeroSection = () => {
                   </Tooltip>
                   <div className="flex items-center h-full gap-2">
                     <Link
-                      href={config.social.twitter}
+                      href={config.social.instagram}
                       target="_blank"
                     >
                       <Button variant={"outline"}>
-                        <SiX size={24} />
+                        <SiInstagram size={24} />
                       </Button>
                     </Link>
                     <Link
@@ -130,12 +117,12 @@ const HeroSection = () => {
                       </Button>
                     </Link>
                     <Link
-                      href={config.social.linkedin}
+                      href={config.social.facebook}
                       target="_blank"
                       className="cursor-can-hover"
                     >
                       <Button variant={"outline"}>
-                        <SiLinkedin size={24} />
+                        <SiFacebook size={24} />
                       </Button>
                     </Link>
                   </div>
