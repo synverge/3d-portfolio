@@ -24,7 +24,7 @@ const config = {
   ],
   author: "Chanon Chirakanchanakit",
   displayName: "Chanon C.",
-  email: "chanon.jirak@gmail.com",
+  email: "serross1223@gmail.com",
   site: "",
 
   // for github stars button
