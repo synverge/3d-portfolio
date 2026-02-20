@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import React from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   Modal,
   ModalBody,
@@ -10,6 +11,13 @@ import {
 } from "../ui/animated-modal";
 import { FloatingDock } from "../ui/floating-dock";
 import Link from "next/link";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTrigger,
+} from "../ui/dialog";
 
 import SmoothScroll from "../smooth-scroll";
 import projects, { Project } from "@/data/projects";
@@ -80,11 +88,58 @@ const Modall = ({ project }: { project: Project }) => {
 export default ProjectsSection;
 
 const ProjectContents = ({ project }: { project: Project }) => {
+  const [hovering, setHovering] = React.useState(false);
   return (
     <>
-      <h4 className="text-lg md:text-2xl text-neutral-600 dark:text-neutral-100 font-bold text-center mb-8">
+      <h4 className="text-lg md:text-2xl text-neutral-600 dark:text-neutral-100 font-bold text-center mb-4">
         {project.title}
       </h4>
+
+      {/* Project Image with Click to Zoom */}
+      <div className="w-full rounded-lg overflow-hidden mb-8">
+        <Dialog>
+          <DialogTrigger
+            className="relative w-full"
+            onMouseEnter={() => setHovering(true)}
+            onMouseLeave={() => setHovering(false)}
+          >
+            <Image
+              src={project.src}
+              alt={project.title}
+              width={1000}
+              height={1000}
+              className="w-full rounded-lg h-auto object-cover"
+            />
+            <AnimatePresence>
+              {hovering && (
+                <motion.div
+                  className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black/50 text-white backdrop-blur-[1px]"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  Click to zoom
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </DialogTrigger>
+          <DialogContent className="max-w-[95vw] max-h-[95vh] w-auto h-auto bg-transparent outline-none border-none p-0 shadow-none flex flex-col items-center justify-center [&>button]:z-50 [&>button]:text-white [&>button]:bg-black/40 [&>button]:hover:bg-black/60 [&>button]:top-4 [&>button]:right-4">
+            <DialogHeader className="w-full bg-black/50 backdrop-blur-md p-2 rounded-t-lg absolute top-0 left-0 z-10">
+              <DialogDescription className="text-white text-center font-bold">
+                {project.title}
+              </DialogDescription>
+            </DialogHeader>
+            <Image
+              src={project.src}
+              alt={project.title}
+              width={1920}
+              height={1080}
+              className="max-w-full max-h-[90vh] object-contain rounded-lg"
+            />
+          </DialogContent>
+        </Dialog>
+      </div>
+
       <div className="flex flex-col md:flex-row md:justify-evenly max-w-screen overflow-hidden md:overflow-visible">
         <div className="flex flex-row md:flex-col-reverse justify-center items-center gap-2 text-3xl mb-8">
           <p className="text-sm mt-1 text-neutral-600 dark:text-neutral-500">
@@ -103,35 +158,6 @@ const ProjectContents = ({ project }: { project: Project }) => {
           </div>
         )}
       </div>
-      {/* <div className="flex justify-center items-center">
-        {project.screenshots.map((image, idx) => (
-          <motion.div
-            key={"images" + idx}
-            style={{
-              rotate: Math.random() * 20 - 10,
-            }}
-            whileHover={{
-              scale: 1.1,
-              rotate: 0,
-              zIndex: 100,
-            }}
-            whileTap={{
-              scale: 1.1,
-              rotate: 0,
-              zIndex: 100,
-            }}
-            className="rounded-xl -mr-4 mt-4 p-1 bg-white dark:bg-neutral-800 dark:border-neutral-700 border border-neutral-100 flex-shrink-0 overflow-hidden"
-          >
-            <Image
-              src={`${project.src.split("1.png")[0]}${image}`}
-              alt="screenshots"
-              width="500"
-              height="500"
-              className="rounded-lg h-20 w-20 md:h-40 md:w-40 object-cover flex-shrink-0"
-            />
-          </motion.div>
-        ))}
-      </div> */}
       {project.content}
     </>
   );

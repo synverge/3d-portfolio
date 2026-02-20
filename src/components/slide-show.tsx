@@ -26,7 +26,7 @@ const SlideShow = ({ images }: { images: string[] }) => {
         perPage: 1,
         start: 0,
         rewind: true,
-        padding: {left:'3rem',right:'3rem'},
+        padding: { left: '3rem', right: '3rem' },
         gap: "1rem",
       }}
       hasTrack={false}
@@ -60,20 +60,19 @@ const SlideShow = ({ images }: { images: string[] }) => {
                   )}
                 </AnimatePresence>
               </DialogTrigger>
-              <DialogContent className="min-w-[90vw] h-[90vh] bg-transparent outline-none border-none p-0 m-0">
-                <DialogHeader className="w-full">
+              <DialogContent className="max-w-[95vw] max-h-[95vh] w-auto h-auto bg-transparent outline-none border-none p-0 shadow-none flex flex-col items-center justify-center [&>button]:z-50 [&>button]:text-white [&>button]:bg-black/40 [&>button]:hover:bg-black/60 [&>button]:top-4 [&>button]:right-4">
+                <DialogHeader className="w-full bg-black/50 backdrop-blur-md p-2 rounded-t-lg absolute top-0 left-0 z-10">
                   {/* <DialogTitle>Are you absolutely sure?</DialogTitle> */}
-                  <DialogDescription>
+                  <DialogDescription className="text-white text-center font-bold">
                     {image.split("/").pop()}
                   </DialogDescription>
                 </DialogHeader>
                 <Image
                   src={image}
                   alt="screenshot"
-                  width={1000}
-                  height={1000}
-                  className="w-full"
-                  style={{ objectFit: "contain", width: "100vw" }}
+                  width={1920}
+                  height={1080}
+                  className="max-w-full max-h-[90vh] object-contain rounded-lg"
                 />
               </DialogContent>
             </Dialog>

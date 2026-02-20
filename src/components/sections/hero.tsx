@@ -32,7 +32,14 @@ const HeroSection = () => {
         >
           {!isLoading && (
             <div className="flex flex-col">
-              <div>
+              <div className="flex flex-col items-center md:items-start">
+                <BlurIn delay={0.5}>
+                  <img
+                    src="/assets/avatar.jpg"
+                    alt="avatar"
+                    className="w-32 h-32 rounded-full shadow-lg mb-6 object-cover border-4 border-white dark:border-zinc-800"
+                  />
+                </BlurIn>
                 <BlurIn delay={0.7}>
                   <p
                     className={cn(
@@ -46,27 +53,17 @@ const HeroSection = () => {
                 </BlurIn>
 
                 <BlurIn delay={1}>
-                  <Tooltip delayDuration={300}>
-                    <TooltipTrigger asChild>
-                      <h1
-                        className={cn(
-                          "-ml-[6px] leading-none font-thin text-transparent text-slate-800 text-left",
-                          "font-thin text-7xl md:text-7xl lg:text-8xl xl:text-9xl",
-                          "cursor-default text-edge-outline font-display "
-                        )}
-                      >
-                        {config.displayName.split(" ")[0]}
-                        <br className="md:block hiidden" />
-                        {config.displayName.split(" ")[1]}
-                      </h1>
-                    </TooltipTrigger>
-                    <TooltipContent
-                      side="top"
-                      className="dark:bg-white dark:text-black"
-                    >
-                      theres something waiting for you in devtools
-                    </TooltipContent>
-                  </Tooltip>
+                  <h1
+                    className={cn(
+                      "-ml-[6px] leading-none font-thin text-transparent text-slate-800 text-left",
+                      "font-thin text-7xl md:text-7xl lg:text-8xl xl:text-9xl",
+                      "cursor-default text-edge-outline font-display "
+                    )}
+                  >
+                    {config.displayName.split(" ")[0]}
+                    <br className="md:block hiidden" />
+                    {config.displayName.split(" ")[1]}
+                  </h1>
                 </BlurIn>
                 {/* <div className="md:block hidden bg-gradient-to-r from-zinc-300/0 via-zinc-300/50 to-zinc-300/0 w-screen h-px animate-fade-right animate-glow" /> */}
                 <BlurIn delay={1.2}>

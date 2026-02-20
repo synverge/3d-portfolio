@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a20"/>
+      <stop offset="40%" style="stop-color:#1e1b4b"/>
+      <stop offset="100%" style="stop-color:#627eea"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#bg)"/>
+  <!-- Blockchain blocks -->
+  <g fill="none" stroke="rgba(98,126,234,0.25)" stroke-width="1.5">
+    <rect x="120" y="140" width="80" height="60" rx="6"/>
+    <rect x="260" y="110" width="80" height="60" rx="6"/>
+    <rect x="400" y="150" width="80" height="60" rx="6"/>
+    <rect x="190" y="250" width="80" height="60" rx="6"/>
+    <rect x="330" y="260" width="80" height="60" rx="6"/>
+  </g>
+  <!-- Chain links -->
+  <line x1="200" y1="170" x2="260" y2="140" stroke="rgba(98,126,234,0.2)" stroke-width="2"/>
+  <line x1="340" y1="140" x2="400" y2="170" stroke="rgba(98,126,234,0.2)" stroke-width="2"/>
+  <line x1="160" y1="200" x2="230" y2="250" stroke="rgba(98,126,234,0.15)" stroke-width="2"/>
+  <line x1="270" y1="280" x2="330" y2="280" stroke="rgba(98,126,234,0.15)" stroke-width="2"/>
+  <!-- Ethereum diamond -->
+  <polygon points="300,50 270,100 300,120 330,100" fill="rgba(98,126,234,0.15)" stroke="rgba(98,126,234,0.3)" stroke-width="1"/>
+  <polygon points="300,120 270,100 300,85 330,100" fill="rgba(98,126,234,0.1)"/>
+  <!-- Discord icon hint -->
+  <circle cx="500" cy="300" r="30" fill="rgba(88,101,242,0.15)"/>
+  <text x="488" y="308" font-family="sans-serif" font-size="20" fill="rgba(88,101,242,0.4)">🤖</text>
+  <!-- Glows -->
+  <circle cx="500" cy="80" r="120" fill="rgba(98,126,234,0.06)"/>
+  <circle cx="80" cy="350" r="80" fill="rgba(30,27,75,0.2)"/>
+</svg>

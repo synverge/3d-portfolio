@@ -27,9 +27,7 @@ const config = {
   email: "serross1223@gmail.com",
   site: "",
 
-  // for github stars button
-  githubUsername: "synverge",
-  githubRepo: "3d-portfolio",
+  // ...existing code...
 
   get ogImg() {
     return this.site + "/assets/seo/og-image.png";
