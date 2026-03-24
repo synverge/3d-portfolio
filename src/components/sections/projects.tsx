@@ -31,7 +31,10 @@ import SectionWrapper from "../ui/section-wrapper";
 const ProjectsSection = () => {
   const { projects: adminProjects } = usePortfolioData();
 
-  const displayProjects = projects.map((p) => {
+  // When admin has an override list, only show projects that survived deletion
+  const displayProjects = projects
+    .filter((p) => adminProjects.length === 0 || adminProjects.some((o) => o.id === p.id))
+    .map((p) => {
     const ov = adminProjects.find((o) => o.id === p.id);
     if (!ov) return p;
     return {
