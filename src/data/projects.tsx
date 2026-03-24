@@ -191,6 +191,7 @@ import {
   SiWebpack,
   SiWordpress,
   SiXcode,
+  SiXml,
   SiYarn,
 } from "react-icons/si";
 import { TbBrandAzure, TbBrandCpp, TbBrandCSharp, TbBrandFramerMotion, TbBrandPowershell, TbBrandReactNative, TbBrandVisualStudio, TbBrandVscode, TbBrandXamarin } from "react-icons/tb";
