@@ -22,6 +22,7 @@ import {
   RefreshCw,
   Upload,
 } from "lucide-react";
+import { PROJECT_SKILLS } from "@/data/projects";
 
 // ─── types ───────────────────────────────────────────────────────────────────
 
@@ -309,6 +310,115 @@ function TagList({
         >
           Add
         </button>
+      </div>
+    </div>
+  );
+}
+
+const ALL_SKILLS = Object.values(PROJECT_SKILLS);
+
+function SkillTagList({
+  label,
+  items,
+  onChange,
+}: {
+  label: string;
+  items: string[];
+  onChange: (items: string[]) => void;
+}) {
+  const [input, setInput] = useState("");
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const filtered = input.trim()
+    ? ALL_SKILLS.filter(
+        (s) =>
+          s.title.toLowerCase().includes(input.toLowerCase()) &&
+          !items.includes(s.title)
+      )
+    : ALL_SKILLS.filter((s) => !items.includes(s.title));
+
+  const addSkill = (title: string) => {
+    if (!items.includes(title)) onChange([...items, title]);
+    setInput("");
+    setOpen(false);
+  };
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  return (
+    <div className="flex flex-col gap-2">
+      <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+        {label}
+      </label>
+      <div className="flex flex-wrap gap-2">
+        {items.map((item, i) => {
+          const skill = ALL_SKILLS.find((s) => s.title.toLowerCase() === item.toLowerCase());
+          return (
+            <span
+              key={i}
+              className="flex items-center gap-1.5 bg-muted text-muted-foreground text-xs rounded-full px-2.5 py-1"
+            >
+              {skill?.icon && (
+                <span className="text-sm leading-none">{skill.icon}</span>
+              )}
+              {item}
+              <button
+                onClick={() => onChange(items.filter((_, j) => j !== i))}
+                className="text-muted-foreground hover:text-destructive transition-colors ml-0.5"
+              >
+                ×
+              </button>
+            </span>
+          );
+        })}
+      </div>
+      <div ref={containerRef} className="relative">
+        <input
+          value={input}
+          onChange={(e) => { setInput(e.target.value); setOpen(true); }}
+          onFocus={() => setOpen(true)}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") { setOpen(false); return; }
+            if ((e.key === "Enter" || e.key === ",") && input.trim()) {
+              e.preventDefault();
+              const match = ALL_SKILLS.find(
+                (s) => s.title.toLowerCase() === input.trim().toLowerCase()
+              );
+              addSkill(match ? match.title : input.trim());
+            }
+          }}
+          placeholder="Search or type a skill…"
+          className={cn(
+            "w-full rounded-lg border border-input bg-background px-3 py-1.5 text-sm",
+            "text-foreground placeholder:text-muted-foreground",
+            "focus:outline-none focus:ring-1 focus:ring-ring"
+          )}
+        />
+        {open && filtered.length > 0 && (
+          <div className="absolute z-50 top-full mt-1 left-0 right-0 max-h-52 overflow-y-auto rounded-lg border border-border bg-popover shadow-lg">
+            {filtered.map((s) => (
+              <button
+                key={s.title}
+                type="button"
+                onMouseDown={(e) => { e.preventDefault(); addSkill(s.title); }}
+                className="w-full flex items-center gap-2.5 px-3 py-2 text-sm hover:bg-muted transition-colors text-left"
+              >
+                <span className="text-base leading-none shrink-0">{s.icon}</span>
+                <span>{s.title}</span>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -1048,14 +1158,14 @@ function ProjectsEditor({
             onChange={(v) => update(i, "description", v)}
             rows={4}
           />
-          <TagList
+          <SkillTagList
             label="Frontend Stack"
             items={proj.skills.frontend}
             onChange={(items) =>
               update(i, "skills", { ...proj.skills, frontend: items })
             }
           />
-          <TagList
+          <SkillTagList
             label="Backend Stack"
             items={proj.skills.backend}
             onChange={(items) =>
