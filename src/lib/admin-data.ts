@@ -1,5 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
+import { createClient } from "@vercel/kv";
 import { config as defaultConfig } from "@/data/config";
 import {
   SKILLS as defaultSkills,
@@ -99,16 +100,23 @@ export interface PortfolioOverride {
   navLinks?: NavLink[];
 }
 
+// Support both standard KV env var names and Upstash-prefixed names injected by Vercel integration
+function getKvClient() {
+  const url =
+    process.env.KV_REST_API_URL ??
+    process.env.KV_REST_API_TOKEN_KV_REST_API_URL;
+  const token =
+    process.env.KV_REST_API_TOKEN ??
+    process.env.KV_REST_API_TOKEN_KV_REST_API_TOKEN;
+  if (!url || !token) return null;
+  return createClient({ url, token });
+}
+
 export async function readOverride(): Promise<PortfolioOverride> {
-  // Production: use Vercel KV
-  if (process.env.KV_REST_API_URL) {
-    try {
-      const { kv } = await import("@vercel/kv");
-      const data = await kv.get<PortfolioOverride>("portfolio-override");
-      return data ?? {};
-    } catch {
-      return {};
-    }
+  const kv = getKvClient();
+  if (kv) {
+    const data = await kv.get<PortfolioOverride>("portfolio-override");
+    return data ?? {};
   }
   // Local dev: file system fallback
   try {
@@ -120,9 +128,8 @@ export async function readOverride(): Promise<PortfolioOverride> {
 }
 
 export async function writeOverride(data: PortfolioOverride): Promise<void> {
-  // Production: use Vercel KV
-  if (process.env.KV_REST_API_URL) {
-    const { kv } = await import("@vercel/kv");
+  const kv = getKvClient();
+  if (kv) {
     await kv.set("portfolio-override", data);
     return;
   }
