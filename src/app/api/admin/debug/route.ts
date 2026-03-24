@@ -1,36 +1,28 @@
 import { NextResponse } from "next/server";
-import { getKvClient } from "@/lib/admin-data";
+import { getKvClient, PortfolioOverride } from "@/lib/admin-data";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const url =
-    process.env.KV_REST_API_URL ??
-    process.env.KV_REST_API_TOKEN_KV_REST_API_URL;
-  const token =
-    process.env.KV_REST_API_TOKEN ??
-    process.env.KV_REST_API_TOKEN_KV_REST_API_TOKEN;
-
-  const envInfo = {
-    KV_REST_API_URL: process.env.KV_REST_API_URL ? "SET" : "MISSING",
-    KV_REST_API_TOKEN: process.env.KV_REST_API_TOKEN ? "SET" : "MISSING",
-    KV_REST_API_TOKEN_KV_REST_API_URL: process.env.KV_REST_API_TOKEN_KV_REST_API_URL ? "SET" : "MISSING",
-    KV_REST_API_TOKEN_KV_REST_API_TOKEN: process.env.KV_REST_API_TOKEN_KV_REST_API_TOKEN ? "SET" : "MISSING",
-    resolvedUrl: url ? url.slice(0, 30) + "..." : "NONE",
-    resolvedToken: token ? token.slice(0, 10) + "..." : "NONE",
-  };
-
   const kv = getKvClient();
   if (!kv) {
-    return NextResponse.json({ env: envInfo, kv: "NO CLIENT — falling back to filesystem" });
+    return NextResponse.json({ kv: "NO CLIENT — falling back to filesystem" });
   }
 
   try {
-    await kv.set("__debug_test__", { ok: true, ts: Date.now() });
-    const read = await kv.get("__debug_test__");
-    await kv.del("__debug_test__");
-    return NextResponse.json({ env: envInfo, kv: "OK", testWrite: read });
+    // Read actual stored data
+    const stored = await kv.get<PortfolioOverride>("portfolio-override");
+    return NextResponse.json({
+      kv: "OK",
+      stored: {
+        hasData: stored !== null,
+        experienceCount: stored?.experience?.length ?? "null (uses default)",
+        certificatesCount: stored?.certificates?.length ?? "null (uses default)",
+        projectsCount: stored?.projects?.length ?? "null (uses default)",
+        raw: stored,
+      },
+    });
   } catch (e) {
-    return NextResponse.json({ env: envInfo, kv: "ERROR", error: String(e) });
+    return NextResponse.json({ kv: "ERROR", error: String(e) });
   }
 }
