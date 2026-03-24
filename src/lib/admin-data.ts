@@ -99,8 +99,10 @@ export interface PortfolioOverride {
   navLinks?: NavLink[];
 }
 
+const KV_KEY = "portfolio-override";
+
 // Support both standard KV env var names and Upstash-prefixed names injected by Vercel integration
-export function getKvClient() {
+function getKvConfig(): { url: string; token: string } | null {
   const url =
     process.env.KV_REST_API_URL ??
     process.env.KV_REST_API_TOKEN_KV_REST_API_URL;
@@ -108,16 +110,38 @@ export function getKvClient() {
     process.env.KV_REST_API_TOKEN ??
     process.env.KV_REST_API_TOKEN_KV_REST_API_TOKEN;
   if (!url || !token) return null;
-  // Use @upstash/redis directly — more reliable than @vercel/kv createClient wrapper
-  const { Redis } = require("@upstash/redis");
-  return new Redis({ url, token }) as import("@upstash/redis").Redis;
+  return { url, token };
+}
+
+// Use raw fetch to Upstash REST API — avoids SDK serialization quirks and connection issues
+async function kvGet(url: string, token: string): Promise<PortfolioOverride | null> {
+  const res = await fetch(`${url}/get/${KV_KEY}`, {
+    headers: { Authorization: `Bearer ${token}` },
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error(`KV read failed: ${res.status}`);
+  const json = (await res.json()) as { result: string | null };
+  if (json.result == null) return null;
+  const parsed: unknown = typeof json.result === "string" ? JSON.parse(json.result) : json.result;
+  return (parsed ?? {}) as PortfolioOverride;
+}
+
+async function kvSet(url: string, token: string, data: PortfolioOverride): Promise<void> {
+  const res = await fetch(`${url}/set/${KV_KEY}`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`KV write failed: ${res.status} ${body}`);
+  }
 }
 
 export async function readOverride(): Promise<PortfolioOverride> {
-  const kv = getKvClient();
+  const kv = getKvConfig();
   if (kv) {
-    const data = await kv.get<PortfolioOverride>("portfolio-override");
-    return data ?? {};
+    return (await kvGet(kv.url, kv.token)) ?? {};
   }
   // Local dev: file system fallback
   try {
@@ -129,9 +153,9 @@ export async function readOverride(): Promise<PortfolioOverride> {
 }
 
 export async function writeOverride(data: PortfolioOverride): Promise<void> {
-  const kv = getKvClient();
+  const kv = getKvConfig();
   if (kv) {
-    await kv.set("portfolio-override", data);
+    await kvSet(kv.url, kv.token, data);
     return;
   }
   // Local dev: file system fallback
