@@ -100,6 +100,17 @@ export interface PortfolioOverride {
 }
 
 export async function readOverride(): Promise<PortfolioOverride> {
+  // Production: use Vercel KV
+  if (process.env.KV_REST_API_URL) {
+    try {
+      const { kv } = await import("@vercel/kv");
+      const data = await kv.get<PortfolioOverride>("portfolio-override");
+      return data ?? {};
+    } catch {
+      return {};
+    }
+  }
+  // Local dev: file system fallback
   try {
     const content = await fs.readFile(OVERRIDE_FILE, "utf-8");
     return JSON.parse(content);
@@ -109,6 +120,13 @@ export async function readOverride(): Promise<PortfolioOverride> {
 }
 
 export async function writeOverride(data: PortfolioOverride): Promise<void> {
+  // Production: use Vercel KV
+  if (process.env.KV_REST_API_URL) {
+    const { kv } = await import("@vercel/kv");
+    await kv.set("portfolio-override", data);
+    return;
+  }
+  // Local dev: file system fallback
   const tmp = OVERRIDE_FILE + ".tmp";
   await fs.writeFile(tmp, JSON.stringify(data, null, 2), "utf-8");
   await fs.rename(tmp, OVERRIDE_FILE);
