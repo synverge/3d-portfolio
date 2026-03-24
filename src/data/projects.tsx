@@ -67,7 +67,7 @@ export type Skill = {
   fg: string;
   icon: ReactNode;
 };
-const PROJECT_SKILLS = {
+export const PROJECT_SKILLS: Record<string, Skill> = {
   next: {
     title: "Next.js",
     bg: "black",
@@ -223,6 +223,15 @@ const PROJECT_SKILLS = {
     icon: <SiSupabase />,
   },
 };
+
+// Resolve a skill name string (from admin panel) to a Skill object with icon.
+// Falls back to a plain text skill if no icon mapping exists.
+export function skillFromName(name: string): Skill {
+  const match = Object.values(PROJECT_SKILLS).find(
+    (s) => s.title.toLowerCase() === name.toLowerCase()
+  );
+  return match ?? { title: name, bg: "black", fg: "white", icon: null };
+}
 export type Project = {
   id: string;
   category: string;

@@ -21,7 +21,7 @@ import {
 
 import SmoothScroll from "../smooth-scroll";
 import SlideShow from "../slide-show";
-import projects, { Project } from "@/data/projects";
+import projects, { Project, skillFromName } from "@/data/projects";
 import { usePortfolioData } from "@/contexts/portfolio-data";
 import { cn } from "@/lib/utils";
 import { SectionHeader } from "./section-header";
@@ -46,6 +46,10 @@ const ProjectsSection = () => {
       github: ov.github ?? p.github,
       description: ov.description ?? p.description,
       screenshots: (ov.screenshots && ov.screenshots.length > 0) ? ov.screenshots : p.screenshots,
+      skills: {
+        frontend: ov.skills?.frontend?.length ? ov.skills.frontend.map(skillFromName) : p.skills.frontend,
+        backend: ov.skills?.backend?.length ? ov.skills.backend.map(skillFromName) : p.skills.backend,
+      },
     };
   });
 
@@ -58,7 +62,10 @@ const ProjectsSection = () => {
       title: ov.title,
       src: ov.src,
       screenshots: ov.screenshots ?? [],
-      skills: { frontend: [], backend: [] },
+      skills: {
+        frontend: (ov.skills?.frontend ?? []).map(skillFromName),
+        backend: (ov.skills?.backend ?? []).map(skillFromName),
+      },
       content: null,
       live: ov.live,
       github: ov.github,
