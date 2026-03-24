@@ -35,8 +35,10 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
     }
 
-    await writeOverride(body as PortfolioOverride);
-    return NextResponse.json({ success: true });
+    const saved = body as PortfolioOverride;
+    await writeOverride(saved);
+    const merged = await getMergedPortfolioData(saved);
+    return NextResponse.json({ success: true, merged, override: saved });
   } catch {
     return NextResponse.json(
       { error: "Failed to write data" },

@@ -1413,12 +1413,9 @@ export default function AdminPage() {
         body: JSON.stringify(newOverride),
       });
       if (res.ok) {
-        // Re-fetch to get fresh merged data
-        const refreshed = await fetch("/api/admin/data")
-          .then((r) => r.json())
-          .catch(() => null);
-        if (refreshed) {
-          setData(refreshed);
+        const result = await res.json().catch(() => null);
+        if (result?.merged && result?.override) {
+          setData({ merged: result.merged, override: result.override });
         } else {
           setData((prev) => prev && { ...prev, override: newOverride });
         }
