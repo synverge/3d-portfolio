@@ -369,7 +369,12 @@ function SkillTagList({
               className="flex items-center gap-1.5 bg-muted text-muted-foreground text-xs rounded-full px-2.5 py-1"
             >
               {skill?.icon && (
-                <span className="text-sm leading-none">{skill.icon}</span>
+                <span
+                  className="leading-none shrink-0"
+                  style={{ width: 14, height: 14, display: "inline-flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}
+                >
+                  <span style={{ width: 14, height: 14, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{skill.icon}</span>
+                </span>
               )}
               {item}
               <button
@@ -413,7 +418,12 @@ function SkillTagList({
                 onMouseDown={(e) => { e.preventDefault(); addSkill(s.title); }}
                 className="w-full flex items-center gap-2.5 px-3 py-2 text-sm hover:bg-muted transition-colors text-left"
               >
-                <span className="text-base leading-none shrink-0">{s.icon}</span>
+                <span
+                  className="leading-none shrink-0"
+                  style={{ width: 18, height: 18, display: "inline-flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}
+                >
+                  <span style={{ width: 18, height: 18, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{s.icon}</span>
+                </span>
                 <span>{s.title}</span>
               </button>
             ))}
