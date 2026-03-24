@@ -158,38 +158,28 @@ export async function getMergedPortfolioData(preloadedOverride?: PortfolioOverri
     experience: (() => {
       if (override.experience == null) return defaultExperience;
       const defs = defaultExperience as ExperienceOverride[];
-      const mergedExp = defs.map((def) => {
-        const ov = override.experience!.find((e) => e.id === def.id);
-        return ov ? { ...def, ...ov } : def;
+      // Override is the source of truth for the list (order + count).
+      // For each item in override, merge in the matching default as base.
+      return override.experience.map((ov) => {
+        const def = defs.find((d) => d.id === ov.id);
+        return def ? { ...def, ...ov } : ov;
       });
-      const added = override.experience.filter(
-        (ov) => !defs.some((d) => d.id === ov.id)
-      );
-      return [...mergedExp, ...added];
     })(),
     certificates: (() => {
       if (override.certificates == null) return defaultCertificates;
       const defs = defaultCertificates as CertificateOverride[];
-      const mergedCerts = defs.map((def) => {
-        const ov = override.certificates!.find((c) => c.id === def.id);
-        return ov ? { ...def, ...ov } : def;
+      return override.certificates.map((ov) => {
+        const def = defs.find((d) => d.id === ov.id);
+        return def ? { ...def, ...ov } : ov;
       });
-      const added = override.certificates.filter(
-        (ov) => !defs.some((d) => d.id === ov.id)
-      );
-      return [...mergedCerts, ...added];
     })(),
     projects: (() => {
       if (override.projects == null) return defaultProjects;
       const defs = defaultProjects as ProjectOverride[];
-      const mergedProjects = defs.map((def) => {
-        const ov = override.projects!.find((p) => p.id === def.id);
-        return ov ? { ...def, ...ov } : def;
+      return override.projects.map((ov) => {
+        const def = defs.find((d) => d.id === ov.id);
+        return def ? { ...def, ...ov } : ov;
       });
-      const added = override.projects.filter(
-        (ov) => !defs.some((d) => d.id === ov.id)
-      );
-      return [...mergedProjects, ...added];
     })(),
     navLinks: override.navLinks ?? null,
   };
