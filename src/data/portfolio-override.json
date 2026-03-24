@@ -1,0 +1,203 @@
+{
+  "experience": [
+    {
+      "id": 0,
+      "startDate": "Feb 2026",
+      "endDate": "Feb 2026",
+      "title": "Mini CTF Organizer & Challenge Designer",
+      "company": "Sripatum University (SPU)",
+      "logo": "/assets/experience/spu-logo.png",
+      "banner": "/assets/experience/spu-banner.jpg",
+      "description": [
+        "Organized and hosted the 'SPU Mini CTF' competition, designing hands-on cybersecurity challenges for students.",
+        "Created and deployed challenges covering Web Exploitation, Cryptography, and Forensics.",
+        "Mentored participants during the event, providing guidance on tools and problem-solving methodologies.",
+        "aqdawdadadwwd"
+      ],
+      "keyTakeaways": [
+        "Gained experience in event management and technical education.",
+        "Learned how to design balanced CTF challenges that are both educational and competitive.",
+        "Strengthened public speaking and leadership skills through event hosting."
+      ],
+      "skills": [
+        "system_design",
+        "custom_tooling",
+        "collaboration",
+        "CTF Hosting",
+        "Challenge Design",
+        "a"
+      ]
+    },
+    {
+      "id": 1,
+      "startDate": "2024",
+      "endDate": "Present",
+      "title": "Automation & Backend Engineer",
+      "company": "Independent Technical Experience",
+      "logo": "/assets/experience/engineer-logo.webp",
+      "banner": "/assets/experience/engineer-banner.png",
+      "description": [
+        "Building robust automation systems that handle complex sessions and token management without getting blocked.",
+        "Developing fast, async-first backend services with Python (FastAPI) that are easy to maintain and scale.",
+        "Solving tricky network issues like routing and firewall conflicts on macOS/Linux systems.",
+        "Reverse engineering web apps to understand how they work under the hood and finding hidden API endpoints."
+      ],
+      "keyTakeaways": [
+        "Really understood how browser fingerprinting works and how to get around anti-bot protections.",
+        "Got comfortable building microservices that talk to each other asynchronously.",
+        "Learned how to debug deep system-level network issues when things don't go as planned."
+      ],
+      "skills": [
+        "python",
+        "fastapi",
+        "selenium",
+        "asyncio",
+        "mongodb",
+        "jwt",
+        "networking",
+        "linux"
+      ]
+    },
+    {
+      "id": 2,
+      "startDate": "2023",
+      "endDate": "Present",
+      "title": "Freelance Automation & Web Reverse Engineer",
+      "company": "Independent Contractor",
+      "logo": "/assets/experience/freelance-logo.webp",
+      "banner": "/assets/experience/freelance-banner.png",
+      "description": [
+        "Helping clients automate repetitive tasks by analyzing website traffic and replicating API requests.",
+        "Creating custom tools for specific client needs, from data scrapers to private workflow automation.",
+        "Debugging client-side logic to bypass restrictions and make automation possible."
+      ],
+      "keyTakeaways": [
+        "Developed a knack for quickly understanding how different web applications are structured.",
+        "Learned how to manage projects from start to finish and handle diverse client requirements.",
+        "Figured out how to deal with legacy systems and messy codebases effectively."
+      ],
+      "skills": [
+        "python",
+        "reverse_engineering",
+        "networking",
+        "session_mgmt",
+        "automation",
+        "custom_tooling"
+      ]
+    },
+    {
+      "id": 3,
+      "startDate": "2023",
+      "endDate": "2024",
+      "title": "COSI Program Participant",
+      "company": "Bangkok University",
+      "logo": "/assets/experience/bu-logo.png",
+      "banner": "/assets/experience/bu-banner.png",
+      "description": [
+        "Joined the COSI special program to dive deeper into advanced computing and software development.",
+        "Trained in a collaborative environment that simulates real-world engineering teams."
+      ],
+      "keyTakeaways": [
+        "Built a strong foundation in computer science and software engineering principles.",
+        "Learned how to work effectively with other developers and solve problems together.",
+        "Connected with talented peers and mentors in the tech field."
+      ],
+      "skills": [
+        "python",
+        "system_design",
+        "collaboration"
+      ]
+    },
+    {
+      "id": 4,
+      "startDate": "2022",
+      "endDate": "2022",
+      "title": "Blockchain Bot Developer (NFT Infrastructure)",
+      "company": "International Collaboration Project",
+      "logo": "/assets/experience/nft-logo.svg",
+      "banner": "/assets/experience/nft-banner.svg",
+      "description": [
+        "Teamed up with international partners to build Discord bots for managing NFT launches.",
+        "Created automated commands and workflows to handle thousands of users during community events.",
+        "Resulted in ~1,000,000 THB profit in just 3 days during the peak of the NFT hype."
+      ],
+      "keyTakeaways": [
+        "Experienced the pressure of high-stakes, time-sensitive live deployments.",
+        "Understood how blockchain transactions work and how to optimize them for speed.",
+        "Improved my ability to communicate and collaborate across different cultures and time zones."
+      ],
+      "skills": [
+        "python",
+        "discord",
+        "web3",
+        "automation",
+        "realtime",
+        "international"
+      ]
+    },
+    {
+      "id": 5,
+      "startDate": "2019",
+      "endDate": "2020",
+      "title": "High-Throughput Messaging Systems Developer",
+      "company": "Independent Project",
+      "logo": "/assets/experience/messaging-logo.jpg",
+      "banner": "/assets/experience/messaging-banner.jpeg",
+      "description": [
+        "Built a messaging system capable of sending huge volumes of messages by running requests in parallel.",
+        "Handled rate limiting and session management to keep the system running smoothly without getting blocked.",
+        "Turned this into a commercial product, generating 50,000+ THB in revenue."
+      ],
+      "keyTakeaways": [
+        "Deeply understood how API rate limits work and how to design systems that respect them.",
+        "Got my first taste of turning code into a product and selling it to real customers.",
+        "Learned how to optimize code to squeeze the most performance out of limited resources."
+      ],
+      "skills": [
+        "python",
+        "http_automation",
+        "concurrency",
+        "session_mgmt",
+        "rate_limiting",
+        "api_integration"
+      ]
+    }
+  ],
+  "navLinks": [
+    {
+      "title": "Home",
+      "href": "/",
+      "thumbnail": ""
+    },
+    {
+      "title": "Skills",
+      "href": "/#skills",
+      "thumbnail": "/assets/nav-link-previews/skills.png"
+    },
+    {
+      "title": "Experience",
+      "href": "/#experience",
+      "thumbnail": ""
+    },
+    {
+      "title": "Projects",
+      "href": "/#projects",
+      "thumbnail": ""
+    },
+    {
+      "title": "Certifications",
+      "href": "/#certifications",
+      "thumbnail": ""
+    },
+    {
+      "title": "Blogs",
+      "href": "/blogs",
+      "thumbnail": ""
+    },
+    {
+      "title": "Contact",
+      "href": "/#contact",
+      "thumbnail": "/assets/nav-link-previews/contact.png"
+    }
+  ]
+}

@@ -3,11 +3,9 @@ import { Inter, Archivo_Black } from "next/font/google";
 import "./globals.css";
 import { config } from "@/data/config";
 
-import Header from "@/components/header/header";
-import Footer from "@/components/footer/footer";
 import Script from "next/script";
-import AppOverlays from "@/components/app-overlays";
 import { Providers } from "@/components/providers";
+import { ConditionalShell } from "@/components/conditional-shell";
 
 export const metadata: Metadata = {
   title: config.title,
@@ -69,10 +67,9 @@ export default function RootLayout({
       </head>
       <body>
         <Providers>
-          <Header />
-          {children}
-          <Footer />
-          <AppOverlays />
+          <ConditionalShell>
+            {children}
+          </ConditionalShell>
         </Providers>
       </body>
     </html>

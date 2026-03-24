@@ -2,22 +2,22 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
 import { Button } from "../ui/button";
-import { Github } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { usePreloader } from "../preloader";
-import { BlurIn, BoxReveal } from "../reveal-animations";
+import { BlurIn } from "../reveal-animations";
 import ScrollDownIcon from "../scroll-down-icon";
 import { SiGithub, SiFacebook, SiInstagram } from "react-icons/si";
-import { config } from "@/data/config";
+import { usePortfolioData } from "@/contexts/portfolio-data";
 
 import SectionWrapper from "../ui/section-wrapper";
 
 const HeroSection = () => {
   const { isLoading } = usePreloader();
+  const { config, heroTagline, heroAvatarUrl } = usePortfolioData();
 
   return (
     <SectionWrapper id="hero" className={cn("relative w-full h-screen")}>
@@ -35,7 +35,7 @@ const HeroSection = () => {
               <div className="flex flex-col items-center md:items-start">
                 <BlurIn delay={0.5}>
                   <img
-                    src="/assets/avatar.jpg"
+                    src={heroAvatarUrl}
                     alt="avatar"
                     className="w-32 h-32 rounded-full shadow-lg mb-6 object-cover border-4 border-white dark:border-zinc-800"
                   />
@@ -60,12 +60,11 @@ const HeroSection = () => {
                       "cursor-default text-edge-outline font-display "
                     )}
                   >
-                    {config.displayName.split(" ")[0]}
+                    {(config.displayName ?? "").split(" ")[0] ?? ""}
                     <br className="md:block hiidden" />
-                    {config.displayName.split(" ")[1]}
+                    {(config.displayName ?? "").split(" ").slice(1).join(" ")}
                   </h1>
                 </BlurIn>
-                {/* <div className="md:block hidden bg-gradient-to-r from-zinc-300/0 via-zinc-300/50 to-zinc-300/0 w-screen h-px animate-fade-right animate-glow" /> */}
                 <BlurIn delay={1.2}>
                   <p
                     className={cn(
@@ -73,7 +72,7 @@ const HeroSection = () => {
                       "cursor-default font-display sm:text-xl md:text-xl whitespace-nowrap bg-clip-text "
                     )}
                   >
-                    A Full-Stack Dev & Red Team Specialist
+                    {heroTagline}
                   </p>
                 </BlurIn>
               </div>
@@ -96,32 +95,41 @@ const HeroSection = () => {
                     </TooltipContent>
                   </Tooltip>
                   <div className="flex items-center h-full gap-2">
+                    {config.social.instagram && (
                     <Link
                       href={config.social.instagram}
                       target="_blank"
+                      rel="noopener noreferrer"
                     >
                       <Button variant={"outline"}>
                         <SiInstagram size={24} />
                       </Button>
                     </Link>
+                    )}
+                    {config.social.github && (
                     <Link
                       href={config.social.github}
                       target="_blank"
+                      rel="noopener noreferrer"
                       className="cursor-can-hover"
                     >
                       <Button variant={"outline"}>
                         <SiGithub size={24} />
                       </Button>
                     </Link>
+                    )}
+                    {config.social.facebook && (
                     <Link
                       href={config.social.facebook}
                       target="_blank"
+                      rel="noopener noreferrer"
                       className="cursor-can-hover"
                     >
                       <Button variant={"outline"}>
                         <SiFacebook size={24} />
                       </Button>
                     </Link>
+                    )}
                   </div>
                 </div>
               </div>

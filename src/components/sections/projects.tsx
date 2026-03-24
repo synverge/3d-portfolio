@@ -20,19 +20,56 @@ import {
 } from "../ui/dialog";
 
 import SmoothScroll from "../smooth-scroll";
+import SlideShow from "../slide-show";
 import projects, { Project } from "@/data/projects";
+import { usePortfolioData } from "@/contexts/portfolio-data";
 import { cn } from "@/lib/utils";
 import { SectionHeader } from "./section-header";
 
 import SectionWrapper from "../ui/section-wrapper";
 
 const ProjectsSection = () => {
+  const { projects: adminProjects } = usePortfolioData();
+
+  const displayProjects = projects.map((p) => {
+    const ov = adminProjects.find((o) => o.id === p.id);
+    if (!ov) return p;
+    return {
+      ...p,
+      title: ov.title,
+      category: ov.category,
+      src: ov.src,
+      live: ov.live,
+      github: ov.github ?? p.github,
+      description: ov.description ?? p.description,
+      screenshots: (ov.screenshots && ov.screenshots.length > 0) ? ov.screenshots : p.screenshots,
+    };
+  });
+
+  // Admin-only projects (not present in static data) appended to the list
+  const adminOnlyProjects: Project[] = adminProjects
+    .filter((ov) => !projects.some((p) => p.id === ov.id))
+    .map((ov) => ({
+      id: ov.id,
+      category: ov.category,
+      title: ov.title,
+      src: ov.src,
+      screenshots: ov.screenshots ?? [],
+      skills: { frontend: [], backend: [] },
+      content: null,
+      live: ov.live,
+      github: ov.github,
+      description: ov.description,
+    }));
+
+  const allProjects = [...displayProjects, ...adminOnlyProjects];
+
   return (
     <SectionWrapper id="projects" className="max-w-7xl mx-auto md:h-[130vh]">
       <SectionHeader id='projects' title="Projects" />
       <div className="grid grid-cols-1 md:grid-cols-3">
-        {projects.map((project, index) => (
-          <Modall key={project.src} project={project} />
+        {allProjects.map((project) => (
+          <Modall key={project.id} project={project} />
         ))}
       </div>
     </SectionWrapper>
@@ -158,7 +195,18 @@ const ProjectContents = ({ project }: { project: Project }) => {
           </div>
         )}
       </div>
-      {project.content}
+      {project.description ? (
+        <div>
+          <div className="font-mono text-sm text-neutral-600 dark:text-neutral-300 whitespace-pre-wrap mb-6">
+            {project.description}
+          </div>
+          {project.screenshots && project.screenshots.length > 0 && (
+            <SlideShow images={project.screenshots} />
+          )}
+        </div>
+      ) : (
+        project.content
+      )}
     </>
   );
 };

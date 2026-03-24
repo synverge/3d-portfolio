@@ -11,7 +11,8 @@ import {
 import Link from "next/link";
 
 import SmoothScroll from "../smooth-scroll";
-import { CERTIFICATES, Certificate } from "@/data/constants";
+import { Certificate } from "@/data/constants";
+import { usePortfolioData } from "@/contexts/portfolio-data";
 import { SectionHeader } from "./section-header";
 
 import SectionWrapper from "../ui/section-wrapper";
@@ -25,12 +26,13 @@ import {
 import Image from "next/image";
 
 const CertificatesSection = () => {
+    const { certificates } = usePortfolioData();
     return (
         <SectionWrapper id="certifications" className="max-w-7xl mx-auto md:h-[130vh]">
             <SectionHeader id="certifications" title="Certifications" />
             <div className="grid grid-cols-1 md:grid-cols-3">
-                {CERTIFICATES.map((cert, index) => (
-                    <Modall key={cert.id} certificate={cert} />
+                {certificates.map((cert) => (
+                    <Modall key={cert.id} certificate={cert as Certificate} />
                 ))}
             </div>
         </SectionWrapper>
