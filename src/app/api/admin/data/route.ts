@@ -6,6 +6,8 @@ import {
   PortfolioOverride,
 } from "@/lib/admin-data";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     const override = await readOverride();
