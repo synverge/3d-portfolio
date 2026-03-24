@@ -5,9 +5,23 @@ import {
   ADMIN_COOKIE_NAME,
   ADMIN_COOKIE_MAX_AGE,
 } from "@/lib/admin-auth";
+import { loginRatelimit } from "@/lib/ratelimit";
 
 export async function POST(req: NextRequest) {
   try {
+    // Rate limit by IP: 5 attempts per 15 minutes
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ??
+      req.headers.get("x-real-ip") ??
+      "anonymous";
+    const { success: rateLimitOk, reset } = await loginRatelimit.limit(ip);
+    if (!rateLimitOk) {
+      const retryAfterSecs = Math.ceil((reset - Date.now()) / 1000);
+      return NextResponse.json(
+        { error: "Too many login attempts. Please try again later." },
+        { status: 429, headers: { "Retry-After": String(retryAfterSecs) } }
+      );
+    }
+
     const { password } = await req.json();
 
     const adminPassword = process.env.ADMIN_PASSWORD;

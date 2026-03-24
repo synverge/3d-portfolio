@@ -164,6 +164,53 @@ function Input({
   );
 }
 
+function isValidUrl(val: string) {
+  if (!val) return true; // empty is fine
+  try {
+    const u = new URL(val);
+    return u.protocol === "https:" || u.protocol === "http:";
+  } catch {
+    return false;
+  }
+}
+
+function UrlInput({
+  label,
+  value,
+  onChange,
+  placeholder,
+  className,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+  className?: string;
+}) {
+  const invalid = value.length > 0 && !isValidUrl(value);
+  return (
+    <div className={cn("flex flex-col gap-1", className)}>
+      <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+        {label}
+      </label>
+      <input
+        type="url"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder ?? "https://..."}
+        className={cn(
+          "rounded-lg border bg-background px-3 py-2 text-sm text-foreground",
+          "placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring transition-colors",
+          invalid ? "border-destructive focus:ring-destructive" : "border-input"
+        )}
+      />
+      {invalid && (
+        <span className="text-xs text-destructive">Please enter a valid URL (https://...)</span>
+      )}
+    </div>
+  );
+}
+
 function Textarea({
   label,
   value,
@@ -680,7 +727,7 @@ function ProfileEditor({
             type="email"
             placeholder="email@example.com"
           />
-          <Input
+          <UrlInput
             label="Site URL"
             value={cfg.site ?? ""}
             onChange={(v) => update("site", v)}
@@ -808,31 +855,31 @@ function SocialEditor({
     <div className="flex flex-col gap-6">
       <SectionCard title="Social Media Links">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Input
+          <UrlInput
             label="GitHub"
             value={social.github ?? ""}
             onChange={(v) => update("github", v)}
             placeholder="https://github.com/..."
           />
-          <Input
+          <UrlInput
             label="Instagram"
             value={social.instagram ?? ""}
             onChange={(v) => update("instagram", v)}
             placeholder="https://instagram.com/..."
           />
-          <Input
+          <UrlInput
             label="Facebook"
             value={social.facebook ?? ""}
             onChange={(v) => update("facebook", v)}
             placeholder="https://facebook.com/..."
           />
-          <Input
+          <UrlInput
             label="LinkedIn"
             value={social.linkedin ?? ""}
             onChange={(v) => update("linkedin", v)}
             placeholder="https://linkedin.com/in/..."
           />
-          <Input
+          <UrlInput
             label="Twitter / X"
             value={social.twitter ?? ""}
             onChange={(v) => update("twitter", v)}
@@ -1071,7 +1118,7 @@ function CertificatesEditor({
             <Input label="Title" value={cert.title} onChange={(v) => update(i, "title", v)} />
             <Input label="Issuer" value={cert.issuer} onChange={(v) => update(i, "issuer", v)} />
             <Input label="Date" value={cert.date} onChange={(v) => update(i, "date", v)} placeholder="Jan 2026" />
-            <Input label="Credential URL" value={cert.credentialUrl ?? ""} onChange={(v) => update(i, "credentialUrl", v)} placeholder="https://..." />
+            <UrlInput label="Credential URL" value={cert.credentialUrl ?? ""} onChange={(v) => update(i, "credentialUrl", v)} placeholder="https://..." />
             <ImageUpload label="Image" value={cert.image} onChange={(v) => update(i, "image", v)} shape="square" />
           </div>
           <Textarea
@@ -1158,8 +1205,8 @@ function ProjectsEditor({
             <Input label="ID (slug)" value={proj.id} onChange={(v) => update(i, "id", v)} />
             <Input label="Category" value={proj.category} onChange={(v) => update(i, "category", v)} />
             <Input label="Title" value={proj.title} onChange={(v) => update(i, "title", v)} />
-            <Input label="Live URL" value={proj.live} onChange={(v) => update(i, "live", v)} placeholder="https://..." />
-            <Input label="GitHub URL" value={proj.github ?? ""} onChange={(v) => update(i, "github", v)} placeholder="https://github.com/..." />
+            <UrlInput label="Live URL" value={proj.live} onChange={(v) => update(i, "live", v)} placeholder="https://..." />
+            <UrlInput label="GitHub URL" value={proj.github ?? ""} onChange={(v) => update(i, "github", v)} placeholder="https://github.com/..." />
             <ImageUpload label="Thumbnail Image" value={proj.src} onChange={(v) => update(i, "src", v)} shape="banner" />
           </div>
           <Textarea
