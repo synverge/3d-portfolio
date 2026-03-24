@@ -101,7 +101,7 @@ export interface PortfolioOverride {
 }
 
 // Support both standard KV env var names and Upstash-prefixed names injected by Vercel integration
-function getKvClient() {
+export function getKvClient() {
   const url =
     process.env.KV_REST_API_URL ??
     process.env.KV_REST_API_TOKEN_KV_REST_API_URL;
