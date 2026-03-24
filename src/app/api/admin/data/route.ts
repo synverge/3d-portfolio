@@ -37,8 +37,11 @@ export async function PUT(req: NextRequest) {
 
     const saved = body as PortfolioOverride;
     await writeOverride(saved);
-    const merged = await getMergedPortfolioData(saved);
-    return NextResponse.json({ success: true, merged, override: saved });
+
+    // Read back from KV to confirm write succeeded (avoids returning stale data)
+    const confirmed = await readOverride();
+    const merged = await getMergedPortfolioData(confirmed);
+    return NextResponse.json({ success: true, merged, override: confirmed });
   } catch {
     return NextResponse.json(
       { error: "Failed to write data" },

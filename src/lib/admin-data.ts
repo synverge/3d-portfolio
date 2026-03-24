@@ -1,6 +1,5 @@
 import { promises as fs } from "fs";
 import path from "path";
-import { createClient } from "@vercel/kv";
 import { config as defaultConfig } from "@/data/config";
 import {
   SKILLS as defaultSkills,
@@ -109,7 +108,9 @@ export function getKvClient() {
     process.env.KV_REST_API_TOKEN ??
     process.env.KV_REST_API_TOKEN_KV_REST_API_TOKEN;
   if (!url || !token) return null;
-  return createClient({ url, token });
+  // Use @upstash/redis directly — more reliable than @vercel/kv createClient wrapper
+  const { Redis } = require("@upstash/redis");
+  return new Redis({ url, token }) as import("@upstash/redis").Redis;
 }
 
 export async function readOverride(): Promise<PortfolioOverride> {
